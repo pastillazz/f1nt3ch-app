@@ -1,25 +1,21 @@
-package com.pastillazz.f1nt3ch.users.infrastructure;
-
+package com.pastillazz.f1nt3ch.users.infrastructure.entities;
+import com.pastillazz.f1nt3ch.users.domain.model.Roles;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
-
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+    @Column(name = "user_name", nullable = false, unique = true)
+    private String userName;
 
     @Column(nullable = false)
     private String password;
@@ -27,14 +23,13 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(name = "first_name", nullable = false)
     private String firstName;
+
+    @Column(name = "last_name",  nullable = false)
     private String lastName;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    private Set<String> roles;
+    @Enumerated(EnumType.STRING)
+    private Roles roles;
 
-    @Builder.Default
-    private boolean enabled = true;
 }
