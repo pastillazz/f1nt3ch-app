@@ -4,6 +4,7 @@ import com.pastillazz.f1nt3ch.wallet.domain.model.Wallet;
 import com.pastillazz.f1nt3ch.wallet.domain.port.WalletRepository;
 import com.pastillazz.f1nt3ch.wallet.infrastructure.entities.WalletEntity;
 import com.pastillazz.f1nt3ch.wallet.infrastructure.mapper.WalletMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,14 +12,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
+@RequiredArgsConstructor
 public class WalletRepositoryAdapter implements WalletRepository {
     private final MySQLWalletRepository mySQLWalletRepository;
     private final WalletMapper walletMapper;
-
-    public WalletRepositoryAdapter(MySQLWalletRepository mySQLWalletRepository, WalletMapper walletMapper) {
-        this.mySQLWalletRepository = mySQLWalletRepository;
-        this.walletMapper = walletMapper;
-    }
 
     @Override
     public Wallet save(Wallet wallet) {

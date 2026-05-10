@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 public class WalletMapper {
 
     public WalletEntity toEntity(Wallet wallet) {
-        return new WalletEntity(
-                wallet.id(),
-                wallet.balance(),
-                wallet.userId()
-        );
+        return WalletEntity.builder()
+                .id(wallet.id())
+                .balance(wallet.balance())
+                .userId(wallet.userId())
+                .build();
     }
 
     public Wallet toModel(WalletEntity entity) {

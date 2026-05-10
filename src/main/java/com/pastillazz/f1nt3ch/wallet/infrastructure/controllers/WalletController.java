@@ -2,6 +2,7 @@ package com.pastillazz.f1nt3ch.wallet.infrastructure.controllers;
 
 import com.pastillazz.f1nt3ch.wallet.application.service.WalletService;
 import com.pastillazz.f1nt3ch.wallet.domain.model.Wallet;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,12 +10,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/wallets")
+@RequiredArgsConstructor
 public class WalletController {
     private final WalletService walletService;
 
-    public WalletController(WalletService walletService) {
-        this.walletService = walletService;
-    }
+
 
     @PostMapping
     public ResponseEntity<Wallet> createWallet(@RequestBody Wallet wallet) {

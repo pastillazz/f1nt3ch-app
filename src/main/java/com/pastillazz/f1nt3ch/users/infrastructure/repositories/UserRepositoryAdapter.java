@@ -5,21 +5,16 @@ import com.pastillazz.f1nt3ch.users.domain.port.UserRepository;
 import com.pastillazz.f1nt3ch.users.infrastructure.entities.UserEntity;
 import com.pastillazz.f1nt3ch.users.infrastructure.mapper.UserMapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-
+@RequiredArgsConstructor
 public class UserRepositoryAdapter implements UserRepository {
-    private MySQLRepository mySQLRepository;
-    private UserMapper userMapper;
-
-    public UserRepositoryAdapter(MySQLRepository mySQLRepository,
-                                 UserMapper userMapper) {
-        this.mySQLRepository = mySQLRepository;
-        this.userMapper = userMapper;
-    }
+    private final MySQLRepository mySQLRepository;
+    private final UserMapper userMapper;
 
     @Override
     public User save(User user) {

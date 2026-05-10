@@ -2,18 +2,16 @@ package com.pastillazz.f1nt3ch.wallet.application.service;
 
 import com.pastillazz.f1nt3ch.wallet.domain.model.Wallet;
 import com.pastillazz.f1nt3ch.wallet.domain.port.WalletRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class WalletService {
     private final WalletRepository walletRepository;
-
-    public WalletService(WalletRepository walletRepository) {
-        this.walletRepository = walletRepository;
-    }
 
     public Wallet createWallet(Wallet wallet) {
         return walletRepository.save(wallet);
