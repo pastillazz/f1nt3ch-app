@@ -4,18 +4,22 @@ import com.pastillazz.f1nt3ch.users.domain.model.User;
 import com.pastillazz.f1nt3ch.users.domain.port.UserRepository;
 import com.pastillazz.f1nt3ch.users.infrastructure.entities.UserEntity;
 import com.pastillazz.f1nt3ch.users.infrastructure.mapper.UserMapper;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class UserRepositoryAdapter implements UserRepository {
     private MySQLRepository mySQLRepository;
     private UserMapper userMapper;
+
+    public UserRepositoryAdapter(MySQLRepository mySQLRepository,
+                                 UserMapper userMapper) {
+        this.mySQLRepository = mySQLRepository;
+        this.userMapper = userMapper;
+    }
 
     @Override
     public User save(User user) {
@@ -27,7 +31,7 @@ public class UserRepositoryAdapter implements UserRepository {
     @Override
     public Optional<User> findByUsername(String username) {
         return mySQLRepository.findByUserName(username)
-                .map(userMapper::toModel);
+                .map(user-> userMapper.toModel(user));
 
     }
 }
