@@ -14,7 +14,15 @@ import java.util.List;
 public class WalletController {
     private final WalletService walletService;
 
+    @GetMapping("/hello")
+    public String hello(){
+        return "Hello from WalletController";
+    }
 
+    @GetMapping("/hello2")
+    public String hello2(){
+        return "Hello from WalletController friend";
+    }
 
     @PostMapping
     public ResponseEntity<Wallet> createWallet(@RequestBody Wallet wallet) {

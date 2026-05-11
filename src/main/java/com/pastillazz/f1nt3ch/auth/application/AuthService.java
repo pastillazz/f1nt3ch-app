@@ -38,7 +38,6 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.password()))
                 .roles(Roles.USER)
                 .build();
-
         userRepository.save(user);
         UserEntity userEntity = userMapper.toEntity(user);
         return new AuthResponse(jwtService.generateToken(userEntity));
