@@ -21,7 +21,7 @@ public class AuthConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> mySQLRepository.findByUserName(username)
+        return email -> mySQLRepository.findByEmail(email)
                 .orElseThrow(()->new UsernameNotFoundException("User not found"));
     }
     @Bean

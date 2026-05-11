@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface MySQLRepository extends JpaRepository <UserEntity, Long> {
-    Optional<UserEntity> findByUserName(String userName);
+    Optional<UserEntity> findByEmail(String email);
 }

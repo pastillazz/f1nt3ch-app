@@ -24,8 +24,8 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        return mySQLRepository.findByUserName(username)
+    public Optional<User> findByEmail(String email) {
+        return mySQLRepository.findByEmail(email)
                 .map(user-> userMapper.toModel(user));
 
     }

@@ -18,10 +18,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(LoginRequest  loginRequest) {
-        return null;
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(RegisterRequest registerRequest) {
-        return null;
+        return ResponseEntity.ok(authService.register(registerRequest));
     }
 }
