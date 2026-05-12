@@ -6,7 +6,6 @@ import com.pastillazz.f1nt3ch.wallet.infrastructure.dto.WalletRequest;
 import com.pastillazz.f1nt3ch.wallet.infrastructure.dto.WalletResponse;
 import com.pastillazz.f1nt3ch.wallet.infrastructure.mapper.RequestMapper;
 import com.pastillazz.f1nt3ch.wallet.infrastructure.mapper.UpdateRequest;
-import com.pastillazz.f1nt3ch.wallet.infrastructure.mapper.WalletMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ import java.util.Optional;
 public class WalletService {
     private final WalletRepository walletRepository;
     private final RequestMapper requestMapper;
-    private final WalletMapper walletMapper;
+
 
     public WalletResponse createWallet(WalletRequest request) {
         Wallet savedWallet=walletRepository.save(requestMapper.toModel(request));
