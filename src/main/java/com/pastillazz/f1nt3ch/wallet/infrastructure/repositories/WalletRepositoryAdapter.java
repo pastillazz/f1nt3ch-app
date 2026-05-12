@@ -42,11 +42,6 @@ public class WalletRepositoryAdapter implements WalletRepository {
         mySQLWalletRepository.deleteById(id);
     }
 
-    @Override
-    public Optional<Wallet> findByUserId(Long userId) {
-        return mySQLWalletRepository.findByUserId(userId)
-                .map(walletMapper::toModel);
-    }
 
     @Override
     public List<Wallet> findAllByUserId(Long userId) {

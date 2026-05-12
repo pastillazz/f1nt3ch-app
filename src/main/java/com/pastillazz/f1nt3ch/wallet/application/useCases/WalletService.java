@@ -37,7 +37,7 @@ public class WalletService {
     }
 
     public WalletResponse updateWallet(Long id, UpdateRequest request) {
-        Wallet wallet=requestMapper.toModel(request);
+        Wallet wallet=requestMapper.toModel2(request);
         Wallet updatedWallet= walletRepository.updateWallet(id, wallet);
         return requestMapper.toResponse(updatedWallet);
 
@@ -47,10 +47,6 @@ public class WalletService {
         walletRepository.deleteById(id);
     }
 
-    public Optional<WalletResponse> getWalletByUserId(Long userId) {
-        return walletRepository.findByUserId(userId)
-                .map(request->requestMapper.toResponse(request));
-    }
     public List<WalletResponse> getAllWalletsByUserId(Long userId) {
         return walletRepository.findAllByUserId(userId)
                 .stream()

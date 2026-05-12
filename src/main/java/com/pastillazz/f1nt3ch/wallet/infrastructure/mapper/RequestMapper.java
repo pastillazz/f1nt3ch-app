@@ -17,7 +17,7 @@ public class RequestMapper {
         return new WalletResponse(wallet.walletName(), wallet.balance());
 
     }
-    public Wallet toModel(UpdateRequest request){
+    public Wallet toModel2(UpdateRequest request){
         return new Wallet(null,
                 request.balance(),
                 null,

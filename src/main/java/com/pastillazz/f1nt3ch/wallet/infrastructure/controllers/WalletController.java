@@ -49,13 +49,8 @@ public class WalletController {
         return ResponseEntity.noContent().build();
     }
 
+
     @GetMapping("/get/user/{userId}")
-    public ResponseEntity<WalletResponse> getWalletByUserId(@PathVariable Long userId) {
-        return walletService.getWalletByUserId(userId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-    @GetMapping("/get/list/{userId}")
     public ResponseEntity<List<WalletResponse>> getAllWalletsByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(walletService.getAllWalletsByUserId(userId));
     }

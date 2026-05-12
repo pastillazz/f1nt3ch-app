@@ -12,6 +12,7 @@ public class WalletMapper {
                 .id(wallet.id())
                 .balance(wallet.balance())
                 .userId(wallet.userId())
+                .walletName(wallet.walletName())
                 .build();
     }
 
