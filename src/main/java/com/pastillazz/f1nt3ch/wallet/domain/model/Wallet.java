@@ -4,5 +4,6 @@ import java.math.BigDecimal;
 
 public record Wallet(Long id,
                      BigDecimal balance,
-                     Long userId) {
+                     Long userId,
+                     String walletName) {
 }

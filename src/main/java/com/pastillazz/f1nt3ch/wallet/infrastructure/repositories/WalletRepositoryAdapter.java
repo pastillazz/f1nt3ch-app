@@ -47,4 +47,27 @@ public class WalletRepositoryAdapter implements WalletRepository {
         return mySQLWalletRepository.findByUserId(userId)
                 .map(walletMapper::toModel);
     }
+
+    @Override
+    public List<Wallet> findAllByUserId(Long userId) {
+        return mySQLWalletRepository.findAllByUserId(userId)
+                .stream()
+                .map(wallets-> walletMapper.toModel(wallets))
+                .toList();
+    }
+
+    @Override
+    public Wallet updateWallet(Long id, Wallet wallet) {
+        return (mySQLWalletRepository.findById(id)
+                .map(existingWallet -> {
+                    WalletEntity updateWallet = new WalletEntity(existingWallet.getId(),
+                            wallet.walletName(),
+                            wallet.balance(),
+                            existingWallet.getUserId());
+                    mySQLWalletRepository.save(updateWallet);
+                    return walletMapper.toModel(updateWallet);
+                }).orElseThrow(() -> new RuntimeException("Wallet not found with id: " + id)));
+
+    }
+
 }

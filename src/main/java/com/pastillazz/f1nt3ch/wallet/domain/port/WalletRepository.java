@@ -10,4 +10,6 @@ public interface WalletRepository {
     List<Wallet> findAll();
     void deleteById(Long id);
     Optional<Wallet> findByUserId(Long userId);
+    List<Wallet> findAllByUserId(Long userId);
+   Wallet updateWallet(Long id, Wallet wallet);
 }

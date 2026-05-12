@@ -19,7 +19,8 @@ public class WalletMapper {
         return new Wallet(
                 entity.getId(),
                 entity.getBalance(),
-                entity.getUserId()
+                entity.getUserId(),
+                entity.getWalletName()
         );
     }
 }

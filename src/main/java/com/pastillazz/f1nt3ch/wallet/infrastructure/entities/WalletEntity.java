@@ -17,10 +17,15 @@ public class WalletEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "wallet_name", nullable = false)
+    private String walletName;
+
     @Column(nullable = false)
     private BigDecimal balance;
 
     @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;
+
+
 
 }
