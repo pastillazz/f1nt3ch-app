@@ -42,8 +42,7 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
     public List<Transaction> findAllByFromWalletId(Long walletId) {
         return mySQLTransactionRepository.findAllByFromWalletId(walletId)
                 .stream()
-                .map(transactions->
-                        transactionMapper.toModel(transactions)).toList();
+                .map(transactionMapper::toModel).toList();
 
     }
 
@@ -51,8 +50,7 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
     public List<Transaction> findAllByToWalletId(Long toWalletId) {
         return mySQLTransactionRepository.findAllByToWalletId(toWalletId)
                 .stream()
-                .map(transactions->
-                        transactionMapper.toModel(transactions)).toList();
+                .map(transactionMapper::toModel).toList();
     }
 
 

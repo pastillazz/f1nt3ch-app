@@ -1,4 +1,4 @@
-package com.pastillazz.f1nt3ch.infrastructure.config.application;
+package com.pastillazz.f1nt3ch.common.infrastructure.config.application;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

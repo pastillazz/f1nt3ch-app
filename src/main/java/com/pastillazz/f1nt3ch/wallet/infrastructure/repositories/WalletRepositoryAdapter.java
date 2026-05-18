@@ -18,33 +18,38 @@ public class WalletRepositoryAdapter implements WalletRepository {
     private final WalletMapper walletMapper;
 
     @Override
-    public Wallet save(Wallet wallet) {
+    public Wallet save(Wallet wallet)
+    {
         WalletEntity entity = walletMapper.toEntity(wallet);
         WalletEntity savedEntity = mySQLWalletRepository.save(entity);
         return walletMapper.toModel(savedEntity);
     }
 
     @Override
-    public Optional<Wallet> findById(Long id) {
+    public Optional<Wallet> findById(Long id)
+    {
         return mySQLWalletRepository.findById(id)
                 .map(walletMapper::toModel);
     }
 
     @Override
-    public List<Wallet> findAll() {
+    public List<Wallet> findAll()
+    {
         return mySQLWalletRepository.findAll().stream()
                 .map(walletMapper::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Long id)
+    {
         mySQLWalletRepository.deleteById(id);
     }
 
 
     @Override
-    public List<Wallet> findAllByUserId(Long userId) {
+    public List<Wallet> findAllByUserId(Long userId)
+    {
         return mySQLWalletRepository.findAllByUserId(userId)
                 .stream()
                 .map(wallets-> walletMapper.toModel(wallets))
@@ -52,17 +57,40 @@ public class WalletRepositoryAdapter implements WalletRepository {
     }
 
     @Override
-    public Wallet updateWallet( Wallet wallet) {
-        return (mySQLWalletRepository.findById(wallet.id())
-                .map(existingWallet -> {
-                    WalletEntity updateWallet = new WalletEntity(existingWallet.getId(),
-                            wallet.walletName(),
-                            wallet.balance(),
-                            existingWallet.getUser());
-                    mySQLWalletRepository.save(updateWallet);
-                    return walletMapper.toModel(updateWallet);
-                }).orElseThrow(() -> new RuntimeException("Wallet not found with id: " + wallet.id())));
+    public Wallet updateWalletBalance( Wallet wallet)
+    {  var existingWallet=mySQLWalletRepository.findById(wallet.id())
+            .orElseThrow(() -> new RuntimeException
+                    ("Wallet not found with id: " + wallet.id()));
 
+        var updatedWallet=Wallet.builder()
+                .id(existingWallet.getId())
+                .balance(wallet.balance())
+                .userId(existingWallet.getUser().getId())
+                .walletName(existingWallet.getWalletName())
+                .type(existingWallet.getType())
+                .build();
+
+        var SavedEntity=mySQLWalletRepository.save(walletMapper.toEntity(updatedWallet));
+        return walletMapper.toModel(SavedEntity);
+
+    }
+
+    public Wallet updateWalletName(Wallet wallet)
+    {
+        var existingWallet=mySQLWalletRepository.findById(wallet.id())
+                .orElseThrow(() -> new RuntimeException
+                        ("Wallet not found with id: " + wallet.id()));
+
+        var updatedWallet=Wallet.builder()
+                .id(existingWallet.getId())
+                .balance(existingWallet.getBalance())
+                .userId(existingWallet.getUser().getId())
+                .walletName(wallet.walletName())
+                .type(existingWallet.getType())
+                .build();
+
+        var SavedEntity=mySQLWalletRepository.save(walletMapper.toEntity(updatedWallet));
+        return walletMapper.toModel(SavedEntity);
     }
 
 }

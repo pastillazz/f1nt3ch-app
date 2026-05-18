@@ -19,6 +19,7 @@ public class WalletMapper {
                 .balance(wallet.balance())
                 .user(user)
                 .walletName(wallet.walletName())
+                .type(wallet.type())
                 .build();
     }
 
@@ -27,7 +28,9 @@ public class WalletMapper {
                 entity.getId(),
                 entity.getBalance(),
                 entity.getUser().getId(),
-                entity.getWalletName()
+                entity.getWalletName(),
+                entity.getType()
         );
     }
+
 }

@@ -3,7 +3,7 @@ package com.pastillazz.f1nt3ch.auth.application;
 import com.pastillazz.f1nt3ch.auth.infrastructure.dto.AuthResponse;
 import com.pastillazz.f1nt3ch.auth.infrastructure.dto.LoginRequest;
 import com.pastillazz.f1nt3ch.auth.infrastructure.dto.RegisterRequest;
-import com.pastillazz.f1nt3ch.infrastructure.config.application.JwtService;
+import com.pastillazz.f1nt3ch.common.infrastructure.config.application.JwtService;
 import com.pastillazz.f1nt3ch.users.domain.model.Roles;
 import com.pastillazz.f1nt3ch.users.domain.model.User;
 import com.pastillazz.f1nt3ch.users.domain.port.UserRepository;

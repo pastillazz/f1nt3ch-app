@@ -1,5 +1,6 @@
 package com.pastillazz.f1nt3ch.wallet.infrastructure.entities;
 
+import com.pastillazz.f1nt3ch.common.CurrencyType;
 import com.pastillazz.f1nt3ch.transactions.infrastructure.entities.TransactionEntity;
 import com.pastillazz.f1nt3ch.users.infrastructure.entities.UserEntity;
 import jakarta.persistence.*;
@@ -15,7 +16,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WalletEntity {
+public class WalletEntity
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +28,8 @@ public class WalletEntity {
     @Column(nullable = false)
     private BigDecimal balance;
 
+    @Enumerated(EnumType.STRING)
+    private CurrencyType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -38,6 +42,5 @@ public class WalletEntity {
     private List<TransactionEntity> incomingTransactions;
 
 
-    public WalletEntity(Long id, String s, BigDecimal balance, UserEntity user) {
-    }
+
 }

@@ -1,4 +1,5 @@
 package com.pastillazz.f1nt3ch.transactions.domain.model;
+import com.pastillazz.f1nt3ch.common.CurrencyType;
 import lombok.Builder;
 
 import java.math.BigDecimal;

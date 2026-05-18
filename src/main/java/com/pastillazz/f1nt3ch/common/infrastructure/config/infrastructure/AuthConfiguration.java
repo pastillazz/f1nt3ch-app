@@ -1,4 +1,4 @@
-package com.pastillazz.f1nt3ch.infrastructure.config.infrastructure;
+package com.pastillazz.f1nt3ch.common.infrastructure.config.infrastructure;
 
 import com.pastillazz.f1nt3ch.users.infrastructure.repositories.MySQLRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
-package com.pastillazz.f1nt3ch.infrastructure.config.infrastructure;
+package com.pastillazz.f1nt3ch.common.infrastructure.config.infrastructure;
 
-import com.pastillazz.f1nt3ch.infrastructure.config.infrastructure.filter.JwtFilter;
+import com.pastillazz.f1nt3ch.common.infrastructure.config.infrastructure.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

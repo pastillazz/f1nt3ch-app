@@ -1,6 +1,6 @@
 package com.pastillazz.f1nt3ch.transactions.infrastructure.entities;
 
-import com.pastillazz.f1nt3ch.transactions.domain.model.CurrencyType;
+import com.pastillazz.f1nt3ch.common.CurrencyType;
 import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionStatus;
 import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionType;
 import com.pastillazz.f1nt3ch.wallet.infrastructure.entities.WalletEntity;
@@ -23,6 +23,8 @@ public class TransactionEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private BigDecimal amount;
+    
+    @Enumerated(EnumType.STRING)
     private CurrencyType currency;
     private Instant transactionDate;
 
