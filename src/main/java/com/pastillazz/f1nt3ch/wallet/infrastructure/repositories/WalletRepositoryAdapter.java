@@ -52,16 +52,16 @@ public class WalletRepositoryAdapter implements WalletRepository {
     }
 
     @Override
-    public Wallet updateWallet(Long id, Wallet wallet) {
-        return (mySQLWalletRepository.findById(id)
+    public Wallet updateWallet( Wallet wallet) {
+        return (mySQLWalletRepository.findById(wallet.id())
                 .map(existingWallet -> {
                     WalletEntity updateWallet = new WalletEntity(existingWallet.getId(),
                             wallet.walletName(),
                             wallet.balance(),
-                            existingWallet.getUserId());
+                            existingWallet.getUser());
                     mySQLWalletRepository.save(updateWallet);
                     return walletMapper.toModel(updateWallet);
-                }).orElseThrow(() -> new RuntimeException("Wallet not found with id: " + id)));
+                }).orElseThrow(() -> new RuntimeException("Wallet not found with id: " + wallet.id())));
 
     }
 

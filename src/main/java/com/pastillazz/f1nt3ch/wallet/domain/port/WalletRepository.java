@@ -11,5 +11,5 @@ public interface WalletRepository {
     void deleteById(Long id);
 
     List<Wallet> findAllByUserId(Long userId);
-   Wallet updateWallet(Long id, Wallet wallet);
+   Wallet updateWallet( Wallet wallet);
 }

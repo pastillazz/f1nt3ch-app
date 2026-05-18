@@ -6,4 +6,5 @@ public record Wallet(Long id,
                      BigDecimal balance,
                      Long userId,
                      String walletName) {
+
 }

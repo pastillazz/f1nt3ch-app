@@ -6,18 +6,21 @@ import com.pastillazz.f1nt3ch.wallet.infrastructure.dto.WalletRequest;
 import com.pastillazz.f1nt3ch.wallet.infrastructure.dto.WalletResponse;
 import com.pastillazz.f1nt3ch.wallet.infrastructure.mapper.RequestMapper;
 import com.pastillazz.f1nt3ch.wallet.infrastructure.mapper.UpdateRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class WalletService {
     private final WalletRepository walletRepository;
     private final RequestMapper requestMapper;
 
+    public WalletService(WalletRepository walletRepository,
+                         RequestMapper requestMapper) {
+        this.walletRepository = walletRepository;
+        this.requestMapper = requestMapper;
+    }
 
     public WalletResponse createWallet(WalletRequest request) {
         Wallet savedWallet=walletRepository.save(requestMapper.toModel(request));
@@ -36,9 +39,9 @@ public class WalletService {
                 .toList();
     }
 
-    public WalletResponse updateWallet(Long id, UpdateRequest request) {
+    public WalletResponse updateWallet(UpdateRequest request) {
         Wallet wallet=requestMapper.toModel2(request);
-        Wallet updatedWallet= walletRepository.updateWallet(id, wallet);
+        Wallet updatedWallet= walletRepository.updateWallet( wallet);
         return requestMapper.toResponse(updatedWallet);
 
     }

@@ -33,11 +33,11 @@ public class WalletController {
         return ResponseEntity.ok(walletService.getAllWallets());
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<WalletResponse> updateWallet(@PathVariable Long id,
+    @PutMapping("/update")
+    public ResponseEntity<WalletResponse> updateWallet(
                                                        @RequestBody UpdateRequest request) {
         try {
-            return ResponseEntity.ok(walletService.updateWallet(id, request));
+            return ResponseEntity.ok(walletService.updateWallet( request));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }

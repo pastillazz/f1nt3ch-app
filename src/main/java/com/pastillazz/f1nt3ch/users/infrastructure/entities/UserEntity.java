@@ -1,5 +1,7 @@
 package com.pastillazz.f1nt3ch.users.infrastructure.entities;
+
 import com.pastillazz.f1nt3ch.users.domain.model.Roles;
+import com.pastillazz.f1nt3ch.wallet.infrastructure.entities.WalletEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,19 +14,17 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String alias;
-
 
     private String password;
 
@@ -39,6 +39,9 @@ public class UserEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Roles roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<WalletEntity> wallets;
 
 
     @Override
