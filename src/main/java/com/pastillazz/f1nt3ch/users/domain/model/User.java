@@ -10,4 +10,5 @@ public record User(Long Id,
                    String firstname,
                    String lastname,
                    Roles roles) {
+
 }

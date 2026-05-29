@@ -1,0 +1,43 @@
+services:
+  fintech-api:
+    image: fintech-api
+    container_name: fintech-api-container
+    build:
+        context: .
+        dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+        - fintech-network
+    environment:
+      SPRING_PROFILES_ACTIVE: "dev"
+      MYSQL_USER: fintech_user
+      MYSQL_PASSWORD: fintech_password
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:latest
+    container_name: database
+    ports:
+      - "3307:3306"
+    networks:
+      - fintech-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: fintechDb
+      MYSQL_USER: fintech_user
+      MYSQL_PASSWORD: fintech_password
+    healthcheck:
+      test: ["CMD-SHELL","mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  fintech-network:
+volumes:
+  mysql-data:
