@@ -2,14 +2,14 @@ package com.pastillazz.f1nt3ch.transactions.application.services;
 
 import com.pastillazz.f1nt3ch.common.application.services.NotificationProducerService;
 import com.pastillazz.f1nt3ch.transactions.application.events.TransactionEvent;
+import com.pastillazz.f1nt3ch.transactions.application.validators.TransactionValidator;
 import com.pastillazz.f1nt3ch.transactions.domain.model.Transaction;
-import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionStatus;
 import com.pastillazz.f1nt3ch.transactions.domain.port.TransactionRepository;
 import com.pastillazz.f1nt3ch.transactions.infrastructure.dto.TransactionRequest;
 import com.pastillazz.f1nt3ch.transactions.infrastructure.dto.TransactionResponse;
 import com.pastillazz.f1nt3ch.transactions.infrastructure.mapper.TransactionRequestMapper;
+import com.pastillazz.f1nt3ch.wallet.domain.model.Wallet;
 import com.pastillazz.f1nt3ch.wallet.domain.port.WalletRepository;
-import com.pastillazz.f1nt3ch.wallet.infrastructure.mapper.WalletMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class TransferService{
     private final TransactionRepository transactionRepository;
     private final TransactionRequestMapper requestMapper;
     private final WalletRepository walletRepository;
-    private final WalletMapper walletMapper;
+    private final TransactionValidator transactionValidator;
     private final NotificationProducerService notificationProducerService;
 
     @Transactional
@@ -32,62 +32,34 @@ public class TransferService{
         log.info("Transaction created -Type: {}, Status: {}", transaction.type(),
                 transaction.status());
 
-        var fromWallet=walletRepository.findById(transaction.fromWalletId())
-                .orElseThrow(()->
-                {
-                    log.error("Transaction failed -Origin wallet not found -Type: {}," +
-                            " Status: {}", transaction.type(), TransactionStatus.FAILED);
+        var fromWallet = transactionValidator.validateFromWallet(transaction);
 
-                    String message="Origin wallet (fromWallet) not found";
+        transactionValidator.validateUser(request.userId(), fromWallet, transaction);
 
-                    notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
-                            TransactionEvent.failure(transaction, message));
+        var toWallet=transactionValidator.validateToWallet(transaction);
 
-                    return new RuntimeException(message);
-                });
+        transactionValidator.validateInvalidAmount(toWallet, transaction);
 
-        var toWallet=walletRepository.findById(transaction.toWalletId())
-                .orElseThrow(()->
-                {
-                    log.error("Transaction failed -Destination wallet not found -Type: {}, " +
-                                    "Status: {}", transaction.type(),TransactionStatus.FAILED);
+        transactionValidator.validateAmount(fromWallet, transaction);
 
-                    String message="Destination wallet (toWallet) not found";
+        var updatedFromWallet = Wallet.builder()
+                    .id(fromWallet.id())
+                    .userId(fromWallet.userId())
+                    .walletName(fromWallet.walletName())
+                    .type(fromWallet.type())
+                    .balance(fromWallet.balance().subtract(transaction.amount()))
+                    .build();
+        walletRepository.updateWalletBalance(updatedFromWallet);
 
-                    notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
-                            TransactionEvent.failure(transaction, message));
+        var updatedToWallet = Wallet.builder()
+                .id(toWallet.id())
+                .userId(toWallet.userId())
+                .walletName(toWallet.walletName())
+                .type(toWallet.type())
+                .balance(toWallet.balance().add(transaction.amount()))
+                .build();
 
-                    return new RuntimeException(message);
-                });
-
-            if (fromWallet.balance().compareTo(request.amount())<0)
-            {
-                log.error("Transaction failed -Insufficient balance -Type: {}, " +
-                        "Status: {}", transaction.type(), TransactionStatus.FAILED);
-
-                String message="Insufficient balance";
-
-                notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
-                        TransactionEvent.failure(transaction, message));
-
-                throw new RuntimeException(message);
-            }
-
-            var fromWalletEntity = walletMapper.toEntity(fromWallet);
-
-            fromWalletEntity.setBalance(fromWalletEntity.getBalance()
-                    .subtract(transaction.amount()));
-
-            walletRepository.updateWalletBalance(walletMapper
-                    .toModel(fromWalletEntity));
-
-            var toWalletEntity = walletMapper.toEntity(toWallet);
-
-            toWalletEntity.setBalance(toWalletEntity.getBalance()
-                    .add(transaction.amount()));
-
-            walletRepository.updateWalletBalance(walletMapper
-                    .toModel(toWalletEntity));
+            walletRepository.updateWalletBalance(updatedToWallet);
 
         Transaction transactionCompleted = transactionRepository.create(transaction);
 

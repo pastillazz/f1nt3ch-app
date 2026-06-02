@@ -1,20 +1,20 @@
 package com.pastillazz.f1nt3ch.transactions.application.services;
 
+import com.pastillazz.f1nt3ch.common.application.services.NotificationProducerService;
+import com.pastillazz.f1nt3ch.transactions.application.events.TransactionEvent;
+import com.pastillazz.f1nt3ch.transactions.application.validators.TransactionValidator;
 import com.pastillazz.f1nt3ch.transactions.domain.model.Transaction;
-import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionStatus;
 import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionType;
 import com.pastillazz.f1nt3ch.transactions.domain.port.TransactionRepository;
 import com.pastillazz.f1nt3ch.transactions.infrastructure.dto.OperationWalletRequest;
 import com.pastillazz.f1nt3ch.transactions.infrastructure.dto.TransactionResponse;
 import com.pastillazz.f1nt3ch.transactions.infrastructure.mapper.OperationMapper;
+import com.pastillazz.f1nt3ch.wallet.domain.model.Wallet;
 import com.pastillazz.f1nt3ch.wallet.domain.port.WalletRepository;
-import com.pastillazz.f1nt3ch.wallet.infrastructure.mapper.WalletMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +23,9 @@ import java.math.BigDecimal;
 public class WalletOperationService {
     private final TransactionRepository transactionRepository;
     private final OperationMapper requestMapper;
+    private final TransactionValidator transactionValidator;
     private final WalletRepository walletRepository;
-    private final WalletMapper walletMapper;
+    private final NotificationProducerService notificationProducerService;
 
     public TransactionResponse deposit(OperationWalletRequest request)
     {
@@ -32,28 +33,27 @@ public class WalletOperationService {
         log.info(" Deposit Operation created -Type: {}, Status: {}",
                 TransactionType.DEPOSIT,transaction.status());
 
-        var toWallet=walletRepository.findById(transaction.fromWalletId())
-                .orElseThrow(()->
-                {
-                    log.error("Transaction failed -Destination wallet not found -Type: {}," +
-                            " Status: {}", transaction.type(), TransactionStatus.FAILED);
-                    return new RuntimeException("wallet not found");
-                });
+        var fromWallet=transactionValidator.validateFromWallet(transaction);
 
-        if (request.amount().compareTo(BigDecimal.ZERO)<=0)
-        {
-            log.error("Transaction failed -Invalid amount -Type: {}, " +
-                    "Status: {}", transaction.type(), TransactionStatus.FAILED);
-            throw new RuntimeException("Invalid amount");
-        }
-        var toWalletEntity = walletMapper.toEntity(toWallet);
-        toWalletEntity.setBalance(toWalletEntity.getBalance()
-                .add(transaction.amount()));
+        transactionValidator.validateUser(request.userId(), fromWallet, transaction);
 
-        walletRepository.updateWalletBalance(walletMapper
-                .toModel(toWalletEntity));
+        transactionValidator.validateInvalidAmount(fromWallet, transaction);
+
+        var updatedFromWallet = Wallet.builder()
+                .id(fromWallet.id())
+                .userId(fromWallet.userId())
+                .walletName(fromWallet.walletName())
+                .type(fromWallet.type())
+                .balance(fromWallet.balance().subtract(transaction.amount()))
+                .build();
+
+        walletRepository.updateWalletBalance(updatedFromWallet);
 
         Transaction transactionCompleted = transactionRepository.create(transaction);
+
+        notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
+                TransactionEvent.success(transaction));
+
         return requestMapper.toResponse(transactionCompleted);
 
     }

@@ -5,6 +5,7 @@ import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionType;
 import java.math.BigDecimal;
 
 public record TransactionRequest(
+        Long userId,
         String email,
         Long fromWalletId,
         Long toWalletId,

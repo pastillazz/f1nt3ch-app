@@ -6,6 +6,8 @@ import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionType;
 import java.math.BigDecimal;
 
 public record OperationWalletRequest(
+        Long userId,
+        String email,
         Long fromWalletId,
         BigDecimal amount,
         CurrencyType currency,

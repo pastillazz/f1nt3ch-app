@@ -19,7 +19,7 @@ public class NotificationConsumerService
     private final EmailService emailService;
     @KafkaListener(topics = "user-topic", groupId = ("notification-group"),
             concurrency = "6")
-    public void save(UserCreatedEvent notification)
+    public void sendUser(UserCreatedEvent notification)
     {
         log.info("Received notification: {}", notification);
 
@@ -46,7 +46,10 @@ public class NotificationConsumerService
                         "Welcome to F1nt3ch! 🚀🎉",text);
 
     }
-    public void save(TransactionEvent notification)
+
+    @KafkaListener(topics = "transfer-topic", groupId = ("notification-group"),
+            concurrency = "6")
+    public void sendTransaction(TransactionEvent notification)
     {
         Notification transactionNotification = Notification
                 .setTransactionNotification(notification);
