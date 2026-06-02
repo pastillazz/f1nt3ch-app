@@ -8,13 +8,14 @@ import com.pastillazz.f1nt3ch.transactions.infrastructure.dto.TransactionRespons
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Component
 public class OperationMapper {
     public Transaction toModel(OperationWalletRequest request)
     {
         return new Transaction(
-                null,
+                UUID.randomUUID(),
                 request.fromWalletId(),
                 request.fromWalletId(),
                 request.amount(),

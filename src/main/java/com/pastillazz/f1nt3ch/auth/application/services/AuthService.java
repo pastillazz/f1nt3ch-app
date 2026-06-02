@@ -1,9 +1,11 @@
-package com.pastillazz.f1nt3ch.auth.application;
+package com.pastillazz.f1nt3ch.auth.application.services;
 
+import com.pastillazz.f1nt3ch.auth.application.events.UserCreatedEvent;
 import com.pastillazz.f1nt3ch.auth.infrastructure.dto.AuthResponse;
 import com.pastillazz.f1nt3ch.auth.infrastructure.dto.LoginRequest;
 import com.pastillazz.f1nt3ch.auth.infrastructure.dto.RegisterRequest;
-import com.pastillazz.f1nt3ch.common.infrastructure.config.application.JwtService;
+import com.pastillazz.f1nt3ch.common.application.services.NotificationProducerService;
+import com.pastillazz.f1nt3ch.common.infrastructure.configuration.application.JwtService;
 import com.pastillazz.f1nt3ch.users.domain.model.Roles;
 import com.pastillazz.f1nt3ch.users.domain.model.User;
 import com.pastillazz.f1nt3ch.users.domain.port.UserRepository;
@@ -25,6 +27,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final NotificationProducerService notificationProducerService;
 
     public AuthResponse register(RegisterRequest request){
         if (userRepository.findByEmail(request.email()).isPresent()){
@@ -38,8 +41,19 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.password()))
                 .roles(Roles.USER)
                 .build();
-        userRepository.save(user);
-        UserEntity userEntity = userMapper.toEntity(user);
+
+        User savedUser=userRepository.save(user);
+
+        UserCreatedEvent userCreatedEvent = UserCreatedEvent.builder()
+                .alias(savedUser.alias())
+                .email(savedUser.email())
+                .title("User registered")
+                .message("User registered successfully").build();
+
+        notificationProducerService.sendMessage("user-topic",
+                String.valueOf(savedUser.Id()), userCreatedEvent);
+
+        UserEntity userEntity = userMapper.toEntity(savedUser);
         return new AuthResponse(jwtService.generateToken(userEntity));
     }
 

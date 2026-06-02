@@ -1,4 +1,4 @@
-package com.pastillazz.f1nt3ch.common.infrastructure.config.infrastructure;
+package com.pastillazz.f1nt3ch.common.infrastructure.configuration.infrastructure;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;

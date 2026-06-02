@@ -1,6 +1,6 @@
-package com.pastillazz.f1nt3ch.common.infrastructure.config.infrastructure;
+package com.pastillazz.f1nt3ch.common.infrastructure.configuration.infrastructure;
 
-import com.pastillazz.f1nt3ch.common.infrastructure.config.infrastructure.filter.JwtFilter;
+import com.pastillazz.f1nt3ch.common.infrastructure.configuration.infrastructure.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,9 @@ public class SecurityConfiguration {
                         auth.requestMatchers("/api/auth/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
-                                        "/swagger-ui.html")
+                                        "/swagger-ui.html",
+                                        "/api/kafka/**"
+                                        )
                                 .permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(session-> session

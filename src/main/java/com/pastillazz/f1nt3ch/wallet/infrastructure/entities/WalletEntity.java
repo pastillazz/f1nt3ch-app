@@ -1,6 +1,6 @@
 package com.pastillazz.f1nt3ch.wallet.infrastructure.entities;
 
-import com.pastillazz.f1nt3ch.common.CurrencyType;
+import com.pastillazz.f1nt3ch.common.domain.model.CurrencyType;
 import com.pastillazz.f1nt3ch.transactions.infrastructure.entities.TransactionEntity;
 import com.pastillazz.f1nt3ch.users.infrastructure.entities.UserEntity;
 import jakarta.persistence.*;
@@ -35,10 +35,10 @@ public class WalletEntity
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @OneToMany(mappedBy = "fromWallet", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fromWallet")
     private List<TransactionEntity> outgoingTransactions;
 
-    @OneToMany(mappedBy = "toWallet", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "toWallet")
     private List<TransactionEntity> incomingTransactions;
 
 

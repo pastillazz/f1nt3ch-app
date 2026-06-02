@@ -19,6 +19,7 @@ public class TransactionMapper {
                 .build();
 
         return TransactionEntity.builder()
+                .email(transaction.email())
                 .id(transaction.id())
                 .fromWallet(fromWallet)
                 .toWallet(toWallet)
@@ -34,6 +35,7 @@ public class TransactionMapper {
     {
         return new Transaction(
                 entity.getId(),
+                entity.getEmail(),
                 entity.getFromWallet().getId(),
                 entity.getToWallet().getId(),
                 entity.getAmount(),

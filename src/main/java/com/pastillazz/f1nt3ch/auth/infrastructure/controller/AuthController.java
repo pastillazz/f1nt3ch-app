@@ -1,6 +1,6 @@
 package com.pastillazz.f1nt3ch.auth.infrastructure.controller;
 
-import com.pastillazz.f1nt3ch.auth.application.AuthService;
+import com.pastillazz.f1nt3ch.auth.application.services.AuthService;
 import com.pastillazz.f1nt3ch.auth.infrastructure.dto.AuthResponse;
 import com.pastillazz.f1nt3ch.auth.infrastructure.dto.LoginRequest;
 import com.pastillazz.f1nt3ch.auth.infrastructure.dto.RegisterRequest;

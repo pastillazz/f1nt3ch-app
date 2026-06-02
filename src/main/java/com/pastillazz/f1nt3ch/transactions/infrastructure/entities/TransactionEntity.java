@@ -1,6 +1,6 @@
 package com.pastillazz.f1nt3ch.transactions.infrastructure.entities;
 
-import com.pastillazz.f1nt3ch.common.CurrencyType;
+import com.pastillazz.f1nt3ch.common.domain.model.CurrencyType;
 import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionStatus;
 import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionType;
 import com.pastillazz.f1nt3ch.wallet.infrastructure.entities.WalletEntity;
@@ -20,12 +20,15 @@ import java.util.UUID;
 @Table(name = "transactions")
 public class TransactionEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     private BigDecimal amount;
-    
+
+    private String email;
+
     @Enumerated(EnumType.STRING)
     private CurrencyType currency;
+
     private Instant transactionDate;
 
     @Enumerated(EnumType.STRING)

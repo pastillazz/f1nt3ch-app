@@ -1,6 +1,6 @@
-package com.pastillazz.f1nt3ch.common.infrastructure.config.infrastructure.filter;
+package com.pastillazz.f1nt3ch.common.infrastructure.configuration.infrastructure.filter;
 
-import com.pastillazz.f1nt3ch.common.infrastructure.config.application.JwtService;
+import com.pastillazz.f1nt3ch.common.infrastructure.configuration.application.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
