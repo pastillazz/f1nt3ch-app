@@ -1,35 +1,67 @@
 package com.pastillazz.f1nt3ch.auditing.infrastructure.mapper;
 
 import com.pastillazz.f1nt3ch.auditing.domain.model.AuditLog;
+import com.pastillazz.f1nt3ch.auditing.infrastructure.dto.AuditResponse;
 import com.pastillazz.f1nt3ch.auditing.infrastructure.entities.AuditEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuditMapper {
+public class AuditMapper
+{
 
     public AuditLog toDomain(AuditEntity entity) {
-        if (entity == null) return null;
+
         return AuditLog.builder()
                 .id(entity.getId())
-                .entityName(entity.getEntityName())
-                .entityId(entity.getEntityId())
-                .action(entity.getAction())
-                .performedBy(entity.getPerformedBy())
+                .userId(entity.getUserId())
+                .email(entity.getEmail())
+                .transactionId(entity.getTransactionId())
+                .fromWalletId(entity.getFromWalletId())
+                .toWalletId(entity.getToWalletId())
+                .amount(entity.getAmount())
+                .currency(entity.getCurrency())
+                .transactionDate(entity.getTransactionDate())
+                .auditDate(entity.getAuditDate())
+                .type(entity.getType())
                 .details(entity.getDetails())
-                .timestamp(entity.getTimestamp())
+                .status(entity.getStatus())
                 .build();
     }
 
-    public AuditEntity toEntity(AuditLog domain) {
-        if (domain == null) return null;
+    public AuditEntity toEntity(AuditLog domain)
+    {
+
         return AuditEntity.builder()
-                .id(domain.id())
-                .entityName(domain.entityName())
-                .entityId(domain.entityId())
-                .action(domain.action())
-                .performedBy(domain.performedBy())
+                .id(null)
+                .email(domain.email())
+                .userId(domain.userId())
+                .transactionId(domain.transactionId())
+                .fromWalletId(domain.fromWalletId())
+                .toWalletId(domain.toWalletId())
+                .amount(domain.amount())
+                .currency(domain.currency())
+                .transactionDate(domain.transactionDate())
+                .auditDate(domain.auditDate())
+                .type(domain.type())
                 .details(domain.details())
-                .timestamp(domain.timestamp())
+                .status(domain.status())
+                .build();
+    }
+    public AuditResponse toResponse(AuditLog domain)
+    {
+        return AuditResponse.builder()
+                .email(domain.email())
+                .userId(domain.userId())
+                .transactionId(domain.transactionId())
+                .fromWalletId(domain.fromWalletId())
+                .toWalletId(domain.toWalletId())
+                .amount(domain.amount())
+                .currency(domain.currency())
+                .transactionDate(domain.transactionDate())
+                .auditDate(domain.auditDate())
+                .type(domain.type())
+                .details(domain.details())
+                .status(domain.status())
                 .build();
     }
 }

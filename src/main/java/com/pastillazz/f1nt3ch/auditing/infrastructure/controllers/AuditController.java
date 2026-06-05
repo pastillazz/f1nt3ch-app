@@ -1,43 +1,50 @@
 package com.pastillazz.f1nt3ch.auditing.infrastructure.controllers;
 
 import com.pastillazz.f1nt3ch.auditing.application.services.AuditService;
-import com.pastillazz.f1nt3ch.auditing.infrastructure.dto.AuditRequest;
 import com.pastillazz.f1nt3ch.auditing.infrastructure.dto.AuditResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/auditing")
 @RequiredArgsConstructor
-public class AuditController {
+public class AuditController
+{
 
     private final AuditService auditService;
 
-    @PostMapping
-    public ResponseEntity<AuditResponse> create(@RequestBody AuditRequest request) {
-        return ResponseEntity.ok(auditService.createAuditLog(request));
+    @GetMapping("/auditId/{id}")
+     public ResponseEntity<AuditResponse> getAuditLogById(@PathVariable UUID id)
+    {
+        return ResponseEntity.ok(auditService.findAuditLogById(id));
     }
 
-    @GetMapping
-    public ResponseEntity<List<AuditResponse>> getAll() {
-        return ResponseEntity.ok(auditService.getAllAuditLogs());
-    }
+    @GetMapping("/all")
+     public ResponseEntity<List<AuditResponse>> getAllAuditLogs()
+     {
+         return ResponseEntity.ok(auditService.findAllAuditLogs());
+     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AuditResponse> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(auditService.getAuditLogById(id));
-    }
+    @GetMapping("/all/transactionId/{transactionId}")
+     public ResponseEntity<AuditResponse> getAuditLogByTransactionId
+            (@PathVariable UUID transactionId)
+     {
+         return ResponseEntity.ok(auditService.findByTransactionId(transactionId));
+     }
+    @GetMapping("/all/userId/{userId}")
+     public ResponseEntity<List<AuditResponse>> getAuditLogsByUserId
+            (@PathVariable Long userId)
+     {
+         return ResponseEntity.ok(auditService.findByUserId(userId));
+     }
 
-    @GetMapping("/entity/{entityName}")
-    public ResponseEntity<List<AuditResponse>> getByEntity(@PathVariable String entityName) {
-        return ResponseEntity.ok(auditService.getAuditLogsByEntity(entityName));
-    }
-
-    @GetMapping("/user/{performedBy}")
-    public ResponseEntity<List<AuditResponse>> getByUser(@PathVariable String performedBy) {
-        return ResponseEntity.ok(auditService.getAuditLogsByUser(performedBy));
-    }
+     @GetMapping("/all/email")
+     public ResponseEntity<List<AuditResponse>> getAuditLogsByEmail(@RequestParam String email)
+     {
+         return ResponseEntity.ok(auditService.findByEmail(email));
+     }
 }

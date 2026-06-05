@@ -16,6 +16,7 @@ public class OperationMapper {
     {
         return new Transaction(
                 UUID.randomUUID(),
+                request.userId(),
                 request.email(),
                 request.fromWalletId(),
                 request.fromWalletId(),

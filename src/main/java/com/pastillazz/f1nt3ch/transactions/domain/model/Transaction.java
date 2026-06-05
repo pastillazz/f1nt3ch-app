@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.UUID;
 @Builder
 public record Transaction(UUID id,
+                          Long userId,
                           String email,
                           Long fromWalletId,
                           Long toWalletId,

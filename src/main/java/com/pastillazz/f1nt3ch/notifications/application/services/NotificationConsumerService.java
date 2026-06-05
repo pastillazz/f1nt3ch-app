@@ -51,6 +51,11 @@ public class NotificationConsumerService
             concurrency = "6")
     public void sendTransaction(TransactionEvent notification)
     {
+        if (notification.status().equals(TransactionStatus.PENDING))
+        {
+            return;
+        }
+
         Notification transactionNotification = Notification
                 .setTransactionNotification(notification);
 

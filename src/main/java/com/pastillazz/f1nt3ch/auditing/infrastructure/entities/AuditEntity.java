@@ -1,8 +1,14 @@
 package com.pastillazz.f1nt3ch.auditing.infrastructure.entities;
 
+import com.pastillazz.f1nt3ch.common.domain.model.CurrencyType;
+import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionStatus;
+import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "audit_logs")
@@ -11,33 +17,42 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuditEntity {
+public class AuditEntity
+{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-    @Column(name = "entity_name", nullable = false)
-    private String entityName;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @Column(name = "entity_id")
-    private Long entityId;
+    private String email;
 
-    @Column(nullable = false)
-    private String action;
+    @Column(name = "transaction_id")
+    private UUID transactionId;
 
-    @Column(name = "performed_by")
-    private String performedBy;
+    @Column(name = "from_wallet_id")
+    private Long fromWalletId;
 
-    @Column(length = 2000)
+    @Column(name = "to_wallet_id")
+    private Long toWalletId;
+
+    private BigDecimal amount;
+
+    private CurrencyType currency;
+
+    @Column(name = "transaction_date")
+    private Instant transactionDate;
+
+    @Column(name = "audit_date")
+    private Instant auditDate;
+
+    private TransactionType type;
+
     private String details;
 
-    @Column(nullable = false)
-    private LocalDateTime timestamp;
+    private TransactionStatus status;
 
-    @PrePersist
-    protected void onCreate() {
-        if (timestamp == null) {
-            timestamp = LocalDateTime.now();
-        }
-    }
+
+
 }

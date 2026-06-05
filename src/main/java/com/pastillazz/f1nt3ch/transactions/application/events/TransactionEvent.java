@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.UUID;
 @Builder
 public record TransactionEvent(UUID id,
+                               Long userId,
                                String email,
                                Long fromWalletId,
                                Long toWalletId,
@@ -25,6 +26,7 @@ public record TransactionEvent(UUID id,
     {
         return TransactionEvent.builder()
                 .id(transaction.id())
+                .userId(transaction.userId())
                 .email(transaction.email())
                 .fromWalletId(transaction.fromWalletId())
                 .toWalletId(transaction.toWalletId())
@@ -36,10 +38,28 @@ public record TransactionEvent(UUID id,
                 .reason("Transaction completed successfully")
                 .build();
     }
+
     public static TransactionEvent failure(Transaction transaction, String reason)
     {
         return TransactionEvent.builder()
                 .id(transaction.id())
+                .userId(transaction.userId())
+                .email(transaction.email())
+                .fromWalletId(transaction.fromWalletId())
+                .toWalletId(transaction.toWalletId())
+                .amount(transaction.amount())
+                .currency(transaction.currency())
+                .transactionDate(transaction.transactionDate())
+                .type(transaction.type())
+                .status(TransactionStatus.FAILED)
+                .reason(reason)
+                .build();
+    }
+    public static TransactionEvent created(Transaction transaction, String reason)
+    {
+        return TransactionEvent.builder()
+                .id(transaction.id())
+                .userId(transaction.userId())
                 .email(transaction.email())
                 .fromWalletId(transaction.fromWalletId())
                 .toWalletId(transaction.toWalletId())

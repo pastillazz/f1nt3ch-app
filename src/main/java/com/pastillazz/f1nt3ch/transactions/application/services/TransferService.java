@@ -31,6 +31,10 @@ public class TransferService{
         Transaction transaction = requestMapper.toModel(request);
         log.info("Transaction created -Type: {}, Status: {}", transaction.type(),
                 transaction.status());
+        String reason = "Transaction pending";
+
+        notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
+                TransactionEvent.created(transaction, reason));
 
         var fromWallet = transactionValidator.validateFromWallet(transaction);
 

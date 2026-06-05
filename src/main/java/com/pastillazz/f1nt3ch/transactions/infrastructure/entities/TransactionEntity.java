@@ -29,6 +29,9 @@ public class TransactionEntity {
     @Enumerated(EnumType.STRING)
     private CurrencyType currency;
 
+    @Column(name = "user_id")
+    private Long userId;
+
     private Instant transactionDate;
 
     @Enumerated(EnumType.STRING)

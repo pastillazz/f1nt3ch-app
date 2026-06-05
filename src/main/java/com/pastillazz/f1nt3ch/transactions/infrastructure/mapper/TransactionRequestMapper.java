@@ -17,6 +17,7 @@ public class TransactionRequestMapper {
     {
         return new Transaction(
                 UUID.randomUUID(),
+                request.userId(),
                 request.email(),
                 request.fromWalletId(),
                 request.toWalletId(),
