@@ -38,7 +38,7 @@ public class TransferService{
 
         var toWallet=transactionValidator.validateToWallet(transaction);
 
-        transactionValidator.validateInvalidAmount(toWallet, transaction);
+        transactionValidator.validateInvalidAmount(transaction);
 
         transactionValidator.validateAmount(fromWallet, transaction);
 

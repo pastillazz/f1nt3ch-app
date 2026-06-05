@@ -37,7 +37,7 @@ public class WalletOperationService {
 
         transactionValidator.validateUser(request.userId(), fromWallet, transaction);
 
-        transactionValidator.validateInvalidAmount(fromWallet, transaction);
+        transactionValidator.validateInvalidAmount(transaction);
 
         var updatedFromWallet = Wallet.builder()
                 .id(fromWallet.id())

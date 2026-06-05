@@ -86,7 +86,7 @@ public class TransactionValidator
         }
     }
 
-    public void validateInvalidAmount(Wallet fromWallet, Transaction transaction)
+    public void validateInvalidAmount(Transaction transaction)
     {
         if (transaction.amount().compareTo(BigDecimal.ZERO)<=0)
         {
