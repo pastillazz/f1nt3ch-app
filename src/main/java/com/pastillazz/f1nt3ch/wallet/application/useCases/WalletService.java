@@ -2,58 +2,46 @@ package com.pastillazz.f1nt3ch.wallet.application.useCases;
 
 import com.pastillazz.f1nt3ch.wallet.domain.model.Wallet;
 import com.pastillazz.f1nt3ch.wallet.domain.port.WalletRepository;
-import com.pastillazz.f1nt3ch.wallet.infrastructure.dto.UpdateRequest;
-import com.pastillazz.f1nt3ch.wallet.infrastructure.dto.WalletRequest;
-import com.pastillazz.f1nt3ch.wallet.infrastructure.dto.WalletResponse;
-import com.pastillazz.f1nt3ch.wallet.infrastructure.mapper.RequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class WalletService {
     private final WalletRepository walletRepository;
-    private final RequestMapper requestMapper;
 
-    public WalletResponse createWallet(WalletRequest request)
+    public Wallet createWallet(Wallet wallet)
     {
-        Wallet savedWallet=walletRepository.save(requestMapper.toModel(request));
-        return requestMapper.toResponse(savedWallet);
+        return walletRepository.save(wallet);
     }
 
-    public Optional<WalletResponse> getWalletById(Long id)
+    public Wallet getWalletById(Long id)
     {
         return walletRepository.findById(id)
-                .map(requestMapper::toResponse);
+                .orElseThrow(()-> new RuntimeException("Wallet not found with id: "+id));
     }
 
-    public List<WalletResponse> getAllWallets()
+    public List<Wallet> getAllWallets()
     {
-        return walletRepository.findAll()
-                .stream()
-                .map(requestMapper::toResponse)
-                .toList();
+        return walletRepository.findAll();
+
     }
 
-    public WalletResponse updateWalletName(UpdateRequest request)
+    public Wallet updateWalletName(Wallet wallet)
     {
-        Wallet updatedWallet=walletRepository
-                .updateWalletName(requestMapper.toUpdateModel(request));
-        return requestMapper.toResponse(updatedWallet);
+        return walletRepository
+                .updateWalletName(wallet);
     }
     public void deleteWallet(Long id)
     {
         walletRepository.deleteById(id);
     }
 
-    public List<WalletResponse> getAllWalletsByUserId(Long userId)
+    public List<Wallet> getAllWalletsByUserId(Long userId)
     {
-        return walletRepository.findAllByUserId(userId)
-                .stream()
-                .map(requestMapper::toResponse)
-                .toList();
+        return walletRepository.findAllByUserId(userId);
+
     }
 }
