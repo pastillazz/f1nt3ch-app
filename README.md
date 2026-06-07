@@ -25,7 +25,7 @@ Este backend se apoya en un stack robusto para garantizar consistencia de datos,
 *   **Lenguaje:** Java 17+ / ecosistema robusto.
 *   **Framework Principal:** Spring Boot (Spring Security, JPA/Hibernate).
 *   **Seguridad:** Stateless JWT (JSON Web Tokens).
-*   **Base de Datos:** PostgreSQL (o compatible) con control de versiones mediante **Flyway Migrations**.
+*   **Base de Datos:** MySQL.
 *   **Mensajería Asíncrona:** Apache Kafka (para comunicación de eventos inter-módulos).
 *   **Contenedores:** Docker y Docker Compose (para orquestación del entorno de desarrollo).
 
