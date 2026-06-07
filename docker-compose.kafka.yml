@@ -2,7 +2,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:latest
     networks:
-      - broker-kafka
+      - f1nt3ch_net
     ports:
       - "9092:9092"
     environment:
@@ -22,7 +22,8 @@ services:
   kafdrop:
     image: obsidiandynamics/kafdrop:latest
     networks:
-      - broker-kafka
+      - f1nt3ch_net
+
     depends_on:
       - kafka
     ports:
@@ -31,5 +32,6 @@ services:
       KAFKA_BROKERCONNECT: kafka:29092
 
 networks:
-  broker-kafka:
+  f1nt3ch_net:
+    name: f1nt3ch_broker_net
     driver: bridge

@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 public record TransactionRequest(
         Long userId,
         String email,
+        String password,
         Long fromWalletId,
         Long toWalletId,
         BigDecimal amount,

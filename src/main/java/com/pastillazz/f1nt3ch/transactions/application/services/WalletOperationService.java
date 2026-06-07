@@ -33,9 +33,15 @@ public class WalletOperationService {
         log.info(" Deposit Operation created -Type: {}, Status: {}",
                 TransactionType.DEPOSIT,transaction.status());
 
+        String reason="Deposit pending";
+
+        notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
+                TransactionEvent.created(transaction, reason));
+
         var fromWallet=transactionValidator.validateFromWallet(transaction);
 
-        transactionValidator.validateUser(request.userId(), fromWallet, transaction);
+        transactionValidator.validateUser(request.userId(), fromWallet,
+                transaction, request.password());
 
         transactionValidator.validateInvalidAmount(transaction);
 
@@ -44,7 +50,7 @@ public class WalletOperationService {
                 .userId(fromWallet.userId())
                 .walletName(fromWallet.walletName())
                 .type(fromWallet.type())
-                .balance(fromWallet.balance().subtract(transaction.amount()))
+                .balance(fromWallet.balance().add(transaction.amount()))
                 .build();
 
         walletRepository.updateWalletBalance(updatedFromWallet);
@@ -52,7 +58,7 @@ public class WalletOperationService {
         Transaction transactionCompleted = transactionRepository.create(transaction);
 
         notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
-                TransactionEvent.success(transaction));
+                TransactionEvent.success(transactionCompleted));
 
         return requestMapper.toResponse(transactionCompleted);
 

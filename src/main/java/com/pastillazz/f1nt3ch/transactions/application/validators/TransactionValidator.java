@@ -4,10 +4,13 @@ import com.pastillazz.f1nt3ch.common.application.services.NotificationProducerSe
 import com.pastillazz.f1nt3ch.transactions.application.events.TransactionEvent;
 import com.pastillazz.f1nt3ch.transactions.domain.model.Transaction;
 import com.pastillazz.f1nt3ch.transactions.domain.model.TransactionStatus;
+import com.pastillazz.f1nt3ch.users.domain.model.User;
+import com.pastillazz.f1nt3ch.users.domain.port.UserRepository;
 import com.pastillazz.f1nt3ch.wallet.domain.model.Wallet;
 import com.pastillazz.f1nt3ch.wallet.domain.port.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -17,8 +20,10 @@ import java.math.BigDecimal;
 @Slf4j
 public class TransactionValidator
 {
-    private final WalletRepository walletRepository;
+     private final WalletRepository walletRepository;
+     private final UserRepository userRepository;
      private final NotificationProducerService notificationProducerService;
+    private final PasswordEncoder passwordEncoder;
 
     public Wallet validateFromWallet(Transaction transaction)
     {
@@ -54,7 +59,7 @@ public class TransactionValidator
                 });
     }
 
-    public void validateUser(Long id, Wallet wallet, Transaction transaction)
+    public void validateUser(Long id, Wallet wallet, Transaction transaction, String password)
     {
         if (!wallet.userId().equals(id))
         {
@@ -64,6 +69,42 @@ public class TransactionValidator
             String message="User not authorized to perform this transaction";
 
             notificationProducerService.sendMessage("transfer-topic",wallet.id().toString(),
+                    TransactionEvent.failure(transaction, message));
+
+            throw new RuntimeException(message);
+        }
+
+        User user=userRepository.findByEmail(transaction.email()).orElseThrow(
+                () ->
+                {
+                    log.error("Transaction failed -User not found -Type: {}, " +
+                            "Status: {}", transaction.type(), TransactionStatus.FAILED);
+                    String message="User not found";
+                    notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
+                            TransactionEvent.failure(transaction, message));
+                    return new RuntimeException(message);
+                }
+        );
+        if (!user.Id().equals(id))
+        {
+             log.info("userID authorized -Type: {}, Status: {}",
+                    transaction.type(), TransactionStatus.PENDING);
+
+            String message="userID not authorized to perform this transaction";
+
+            notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
+                    TransactionEvent.failure(transaction, message));
+
+            throw new RuntimeException(message);
+        }
+        if (!passwordEncoder.matches(password, user.password()))
+        {
+            log.error("Transaction failed -Invalid password -Type: {}, " +
+                    "Status: {}", transaction.type(), TransactionStatus.FAILED);
+
+            String message="Invalid password";
+
+            notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
                     TransactionEvent.failure(transaction, message));
 
             throw new RuntimeException(message);
@@ -92,12 +133,14 @@ public class TransactionValidator
         {
             log.error("Transaction failed -Invalid amount -Type: {}, " +
                     "Status: {}", transaction.type(), TransactionStatus.FAILED);
+            String message="Invalid amount";
+
+            notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
+                    TransactionEvent.failure(transaction, message));
+
             throw new RuntimeException("Invalid amount");
         }
-        String message="Invalid amount";
 
-        notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
-            TransactionEvent.failure(transaction, message));
     }
 
 }

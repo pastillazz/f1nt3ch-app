@@ -8,11 +8,13 @@ services:
     ports:
       - "8080:8080"
     networks:
-        - fintech-network
+        - api_to_kafka_net
     environment:
+      MAIL_USERNAME: "${MAIL_USERNAME}"
+      MAIL_PASSWORD: "${MAIL_PASSWORD}"
       SPRING_PROFILES_ACTIVE: "dev"
-      MYSQL_USER: fintech_user
-      MYSQL_PASSWORD: fintech_password
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
     depends_on:
       mysql:
         condition: service_healthy
@@ -23,7 +25,7 @@ services:
     ports:
       - "3307:3306"
     networks:
-      - fintech-network
+      - api_to_kafka_net
     volumes:
       - mysql-data:/var/lib/mysql
     environment:
@@ -38,6 +40,8 @@ services:
       retries: 5
 
 networks:
-  fintech-network:
+  api_to_kafka_net:
+    name: f1nt3ch_broker_net
+    external: true
 volumes:
   mysql-data:

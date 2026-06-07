@@ -38,7 +38,8 @@ public class TransferService{
 
         var fromWallet = transactionValidator.validateFromWallet(transaction);
 
-        transactionValidator.validateUser(request.userId(), fromWallet, transaction);
+        transactionValidator.validateUser(request.userId(), fromWallet,
+                transaction, request.password());
 
         var toWallet=transactionValidator.validateToWallet(transaction);
 
@@ -68,7 +69,7 @@ public class TransferService{
         Transaction transactionCompleted = transactionRepository.create(transaction);
 
         notificationProducerService.sendMessage("transfer-topic",transaction.id().toString(),
-                TransactionEvent.success(transaction));
+                TransactionEvent.success(transactionCompleted));
 
         return requestMapper.toResponse(transactionCompleted);
 

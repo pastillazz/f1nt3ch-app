@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public record OperationWalletRequest(
         Long userId,
         String email,
+        String password,
         Long fromWalletId,
         BigDecimal amount,
         CurrencyType currency,

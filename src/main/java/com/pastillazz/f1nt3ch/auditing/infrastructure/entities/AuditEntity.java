@@ -38,7 +38,8 @@ public class AuditEntity
     private Long toWalletId;
 
     private BigDecimal amount;
-
+    
+    @Enumerated(EnumType.STRING)
     private CurrencyType currency;
 
     @Column(name = "transaction_date")
@@ -47,10 +48,12 @@ public class AuditEntity
     @Column(name = "audit_date")
     private Instant auditDate;
 
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
 
     private String details;
 
+    @Enumerated(EnumType.STRING)
     private TransactionStatus status;
 
 

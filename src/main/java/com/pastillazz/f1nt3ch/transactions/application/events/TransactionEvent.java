@@ -67,7 +67,7 @@ public record TransactionEvent(UUID id,
                 .currency(transaction.currency())
                 .transactionDate(transaction.transactionDate())
                 .type(transaction.type())
-                .status(TransactionStatus.FAILED)
+                .status(TransactionStatus.PENDING)
                 .reason(reason)
                 .build();
     }
