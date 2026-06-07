@@ -12,9 +12,9 @@ El proyecto está diseñado como un monolito modular donde cada módulo de negoc
 *   **Auth:** Gestión de autenticación segura, emisión y validación de tokens (JWT).
 *   **Users:** Administración de perfiles de usuario, verificación y datos personales.
 *   **Wallets:** Gestión de billeteras digitales, saldos y monedas.
-*   **Transactions:** Procesamiento de transferencias, depósitos y retiros.
+*   **Transactions:** Procesamiento de transferencias y depósitos.
 *   **Notifications:** Envío de alertas del sistema e historial de notificaciones.
-*   **Auditing:** Registro centralizado de logs financieros y operaciones críticas para trazabilidad y seguridad.
+*   **Auditing:** Registro centralizado de logs financieros.
 
 ---
 
@@ -22,7 +22,7 @@ El proyecto está diseñado como un monolito modular donde cada módulo de negoc
 
 Este backend se apoya en un stack robusto para garantizar consistencia de datos, rendimiento y facilidad de despliegue:
 
-*   **Lenguaje:** Java 17+ / ecosistema robusto.
+*   **Lenguaje:** Java 21 / ecosistema robusto.
 *   **Framework Principal:** Spring Boot (Spring Security, JPA/Hibernate).
 *   **Seguridad:** Stateless JWT (JSON Web Tokens).
 *   **Base de Datos:** MySQL.
@@ -34,7 +34,7 @@ Este backend se apoya en un stack robusto para garantizar consistencia de datos,
 ## 📦 Requisitos Previos
 
 Antes de levantar el proyecto, asegúrate de tener instalado:
-*   Java Development Kit (JDK) 17 o superior.
+*   Java Development Kit (JDK) 21 o superior.
 *   Docker y Docker Compose.
 *   Tu IDE favorito (recomendado: IntelliJ IDEA).
 
