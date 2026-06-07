@@ -46,5 +46,5 @@ Sigue estos pasos para clonar el repositorio y levantar el entorno completo:
 
 ### 1. Clonar el repositorio
 ```bash
-git clone [https://github.com/tu-usuario/f1nt3ch.git](https://github.com/tu-usuario/f1nt3ch.git)
+git clone https://github.com/pastillazz/f1nt3ch-app.git
 cd f1nt3ch
