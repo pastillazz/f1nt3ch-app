@@ -13,8 +13,8 @@ services:
       MAIL_USERNAME: "${MAIL_USERNAME}"
       MAIL_PASSWORD: "${MAIL_PASSWORD}"
       SPRING_PROFILES_ACTIVE: "dev"
-      MYSQL_USER: "${MYSQL_USER}"
-      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_USER: fintech_user
+      MYSQL_PASSWORD: fintech_password
     depends_on:
       mysql:
         condition: service_healthy
